@@ -1,0 +1,38 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, classification_report
+from sklearn.datasets import load_iris # Import the built-in dataset
+
+# 1. Load the Data using Scikit-learn's built-in function
+iris = load_iris()
+
+# Create a DataFrame for easier handling (optional, but good practice)
+# Features (X)
+X = pd.DataFrame(iris.data, columns=iris.feature_names)
+# Target (y) - The target is numerical (0, 1, 2), so we'll use the target names later
+y = iris.target
+
+# 2. Split the Data into Training and Testing Sets
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42, stratify=y
+)
+
+# 3. Train a K-Nearest Neighbors Classifier
+model = KNeighborsClassifier(n_neighbors=5)
+model.fit(X_train, y_train)
+
+# 4. Evaluate the Model
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+report = classification_report(y_test, y_pred, target_names=iris.target_names) # Use target_names for clear output
+
+# Output Results
+print("## Classification Model Training and Evaluation (Using SKLearn Built-in Data) 🌸\n")
+print(f"**Trained Model:** K-Nearest Neighbors Classifier (K=5)")
+print(f"**Test Set Size:** {len(X_test)} samples")
+print("-" * 60)
+print(f"**Model Accuracy on Test Data:** {accuracy:.4f}")
+print("-" * 60)
+print("\n**Classification Report:**")
+print(report)
